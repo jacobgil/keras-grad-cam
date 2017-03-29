@@ -133,11 +133,11 @@ print('%s (%s) with probability %.2f' % (top_1[1], top_1[0], top_1[2]))
 
 predicted_class = np.argmax(predictions)
 cam, heatmap = grad_cam(model, preprocessed_input, predicted_class, "block5_conv3")
-cv2.imwrite("cam.jpg", cam)
+cv2.imwrite("gradcam.jpg", cam)
 
 register_gradient()
 guided_model = modify_backprop(model, 'GuidedBackProp')
 saliency_fn = compile_saliency_function(guided_model)
 saliency = saliency_fn([preprocessed_input, 0])
 gradcam = saliency[0] * heatmap[..., np.newaxis]
-cv2.imwrite("gradcam.jpg", deprocess_image(gradcam))
+cv2.imwrite("guided_gradcam.jpg", deprocess_image(gradcam))
