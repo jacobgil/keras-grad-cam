@@ -19,13 +19,13 @@ Usage: `python grad-cam.py <path_to_image>`
 
 Example image from the [original implementation](https://github.com/ramprs/grad-cam):  
 
-'boxer' (243)
+'boxer' (243 or 242 in keras)
 
 ![](/examples/cat_dog.png)
 ![](/examples/cat_dog_242_gradcam.jpg)
 ![](/examples/cat_dog_242_guided_gradcam.jpg)
 
-'tiger cat' (283)
+'tiger cat' (283 or 282 in keras)
 
 ![](/examples/cat_dog.png)
 ![](/examples/cat_dog_282_gradcam.jpg)
