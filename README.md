@@ -1,5 +1,9 @@
 ## Grad-CAM implementation in Keras ##
 
+---
+#### My more recent version of repository: https://github.com/eclique/keras-gradcam.
+---
+
 Gradient class activation maps are a visualization technique for deep learning networks.
 
 See the paper: https://arxiv.org/pdf/1610.02391v1.pdf
