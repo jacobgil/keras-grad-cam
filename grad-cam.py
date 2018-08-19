@@ -103,7 +103,7 @@ def grad_cam(input_model, image, category_index, layer_name):
     output, grads_val = output[0, :], grads_val[0, :, :, :]
 
     weights = np.mean(grads_val, axis = (0, 1))
-    cam = np.ones(output.shape[0 : 2], dtype = np.float32)
+    cam = np.zeros(output.shape[0 : 2], dtype = np.float32)
 
     for i, w in enumerate(weights):
         cam += w * output[:, :, i]
