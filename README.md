@@ -1,3 +1,10 @@
+## Disclaimer ##
+
+This has been forked from [here](https://github.com/jacobgil/keras-grad-cam), as I faced several errors, that would prevent me from successfully executing the script. I copied the solutions from these two issues together:
+
+- https://github.com/jacobgil/keras-grad-cam/issues/17
+- https://github.com/jacobgil/keras-grad-cam/issues/21
+
 ## Grad-CAM implementation in Keras ##
 
 Gradient class activation maps are a visualization technique for deep learning networks.

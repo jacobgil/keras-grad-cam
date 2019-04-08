@@ -1,5 +1,6 @@
 from keras.applications.vgg16 import (
     VGG16, preprocess_input, decode_predictions)
+from keras.models import Model
 from keras.preprocessing import image
 from keras.layers.core import Lambda
 from keras.models import Sequential
@@ -85,19 +86,20 @@ def deprocess_image(x):
     x = np.clip(x, 0, 255).astype('uint8')
     return x
 
-def grad_cam(input_model, image, category_index, layer_name):
-    model = Sequential()
-    model.add(input_model)
+def _compute_gradients(tensor, var_list):
+    grads = tf.gradients(tensor, var_list)
+    return [grad if grad is not None else tf.zeros_like(var) for var, grad in zip(var_list, grads)]
 
+def grad_cam(input_model, image, category_index, layer_name):
     nb_classes = 1000
     target_layer = lambda x: target_category_loss(x, category_index, nb_classes)
-    model.add(Lambda(target_layer,
-                     output_shape = target_category_loss_output_shape))
-
-    loss = K.sum(model.layers[-1].output)
-    conv_output =  [l for l in model.layers[0].layers if l.name is layer_name][0].output
-    grads = normalize(K.gradients(loss, conv_output)[0])
-    gradient_function = K.function([model.layers[0].input], [conv_output, grads])
+    x = Lambda(target_layer, output_shape = target_category_loss_output_shape)(input_model.output)
+    model = Model(inputs=input_model.input, outputs=x)
+    model.summary()
+    loss = K.sum(model.output)
+    conv_output =  [l for l in model.layers if l.name is layer_name][0].output
+    grads = normalize(_compute_gradients(loss, [conv_output])[0])
+    gradient_function = K.function([model.input], [conv_output, grads])
 
     output, grads_val = gradient_function([image])
     output, grads_val = output[0, :], grads_val[0, :, :, :]
